@@ -54,7 +54,7 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@Operation(summary = "Create all users REST api", description = "Create User API is used to get all users from the database")
+	@Operation(summary = "Get all users REST api", description = "Create User API is used to get all users from the database")
 	@ApiResponse(responseCode = "200", description = "HTTP Status 200 SUCCESS")
 	@GetMapping("")
 	public ResponseEntity<List<UserDto>> getAllUsers() {
