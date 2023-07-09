@@ -1,5 +1,6 @@
 package com.schoolapp.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 
 import com.schoolapp.dto.UserDto;
 import com.schoolapp.entity.User;
+import com.schoolapp.exception.ErrorDetails;
+import com.schoolapp.exception.ResourceNotFoundException;
 import com.schoolapp.service.UserService;
 
 @RestController
@@ -57,4 +62,6 @@ public class UserController {
 		userService.deleteUser(userId);
 		return new ResponseEntity<>("User deleted successfully!", HttpStatus.OK);
 	}
+
+	
 }

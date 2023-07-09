@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.schoolapp.dto.UserDto;
 import com.schoolapp.entity.User;
+import com.schoolapp.exception.EmailAlreadyExistsException;
+import com.schoolapp.exception.ResourceNotFoundException;
 import com.schoolapp.mapper.AutoUserMapper;
 import com.schoolapp.mapper.UserMapper;
 import com.schoolapp.repository.UserRepository;
@@ -36,6 +38,12 @@ public class UserServiceImpl implements UserService {
 
 		// User user = modelMapper.map(userDto, User.class);
 
+		Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+
+		if (optionalUser.isPresent()) {
+			throw new EmailAlreadyExistsException("Email Already Exists");
+		}
+
 		User user = AutoUserMapper.MAPPER.mapToUser(userDto);
 
 		User savedUser = userRepository.save(user);
@@ -50,11 +58,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto getUserById(Long id) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		User user = optionalUser.get();
+		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+		// User user = optionalUser.get();
 		// return UserMapper.mapToUserDto(user);
 		// return modelMapper.map(user, UserDto.class);
-		return AutoUserMapper.MAPPER.mapToUserDto(optionalUser.get());
+		return AutoUserMapper.MAPPER.mapToUserDto(user);
 	}
 
 	@Override
@@ -69,7 +77,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto updateUser(UserDto user) {
-		User existingUser = userRepository.findById(user.getId()).get();
+		User existingUser = userRepository.findById(user.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("User", "id", user.getId()));
 		existingUser.setFirstName(user.getFirstName());
 		existingUser.setLastName(user.getLastName());
 		existingUser.setEmail(user.getEmail());
@@ -81,7 +90,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(Long userId) {
-		// TODO Auto-generated method stub
+
+		userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 		userRepository.deleteById(userId);
 	}
 
