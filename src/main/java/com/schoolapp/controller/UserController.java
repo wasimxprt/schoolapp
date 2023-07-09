@@ -24,6 +24,8 @@ import com.schoolapp.exception.ErrorDetails;
 import com.schoolapp.exception.ResourceNotFoundException;
 import com.schoolapp.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/user")
 public class UserController {
@@ -33,7 +35,7 @@ public class UserController {
 
 	// create user
 	@PostMapping("")
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user) {
 		UserDto savedUser = userService.createUser(user);
 		return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
 	}
@@ -51,7 +53,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto user) {
+	public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserDto user) {
 		user.setId(id);
 		UserDto updatedUser = userService.updateUser(user);
 		return new ResponseEntity<>(updatedUser, HttpStatus.OK);

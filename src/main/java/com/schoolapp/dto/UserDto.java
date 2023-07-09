@@ -1,5 +1,7 @@
 package com.schoolapp.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,13 +13,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDto {
 
-	private Long id;	
+	private Long id;
+
+	@NotEmpty(message = "Please entr first name")
 	private String firstName;
+
+	@NotEmpty(message = "Please enter last name")
 	private String lastName;
+
+	@NotEmpty(message = "Please enter email")
+	@Email(message = "Please a enter valid email")
 	private String email;
-	
-	
-	
+
 	public UserDto() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -62,5 +69,5 @@ public class UserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 }
